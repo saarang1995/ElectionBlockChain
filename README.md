@@ -20,3 +20,7 @@ Technologies and setup steps:
 (Will allow us to connect to the blockchain network)
 
 4. Add Solidity language package in the code Editor: Visual Studio code.
+
+
+# Note:
+For cleaner project repository I have excluded node_modules. Please run "npm install" when you download the Electionblockchain project.
