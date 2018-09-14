@@ -16,7 +16,7 @@ App = {
       web3 = new Web3(web3.currentProvider);
     } else {
       // Specify default instance if no web3 instance provided
-      App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+      App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7000');
       web3 = new Web3(App.web3Provider);
     }
     return App.initContract();
@@ -47,7 +47,7 @@ App = {
       }).watch(function(error, event) {
         console.log("event triggered", event)
         // Reload when a new vote is recorded
-        App.render();
+//       App.render();
       });
     });
   },
@@ -73,24 +73,24 @@ App = {
       electionInstance = instance;
       return electionInstance.candidateCount();
     }).then(function(candidatesCount) {
-      var candidatesResults = $("#candidatesResults");
+      let candidatesResults = $("#candidatesResults");
       candidatesResults.empty();
 
-      var candidatesSelect = $('#candidatesSelect');
+      let candidatesSelect = $('#candidatesSelect');
       candidatesSelect.empty();
 
-      for (var i = 1; i <= candidatesCount; i++) {
+      for (let i = 1; i <= candidatesCount.toNumber(); i++) {
         electionInstance.candidates(i).then(function(candidate) {
-          var id = candidate[0];
-          var name = candidate[1];
-          var voteCount = candidate[2];
+          let id = candidate[0];
+          let name = candidate[1];
+          let voteCount = candidate[2];
 
           // Render candidate Result
-          var candidateTemplate = "<tr><th>" + id + "</th><td>" + name + "</td><td>" + voteCount + "</td></tr>"
+          let candidateTemplate = "<tr><th>" + id + "</th><td>" + name + "</td><td>" + voteCount + "</td></tr>"
           candidatesResults.append(candidateTemplate);
 
           // Render candidate ballot option
-          var candidateOption = "<option value='" + id + "' >" + name + "</ option>"
+          let candidateOption = "<option value='" + id + "' >" + name + "</ option>"
           candidatesSelect.append(candidateOption);
         });
       }
@@ -108,7 +108,7 @@ App = {
   },
 
   castVote: function() {
-    var candidateId = $('#candidatesSelect').val();
+    let candidateId = $('#candidatesSelect').val();
     App.contracts.Election.deployed().then(function(instance) {
       return instance.vote(candidateId, { from: App.account });
     }).then(function(result) {
